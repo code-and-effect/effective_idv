@@ -49,7 +49,6 @@ effective_idv_user
 
 and
 
-```
 Add a link to the admin menu:
 
 ```haml
@@ -57,22 +56,19 @@ Add a link to the admin menu:
   = nav_link_to 'Identity Verifications', effective_idv.admin_identity_verifications_path
 ```
 
+Add a link to the user dashboard:
+
+```haml
+= render 'effective/identity_verifications/dashboard'
+```
+
 ## Configuration
+
+Todo
 
 ## Authorization
 
 All authorization checks are handled via the effective_resources gem found in the `config/initializers/effective_resources.rb` file.
-
-## Effective Roles
-
-This gem works with effective roles for the representative roles.
-
-Configure your `config/initializers/effective_roles.rb` something like this:
-
-```
-
-
-```
 
 ## Permissions
 
