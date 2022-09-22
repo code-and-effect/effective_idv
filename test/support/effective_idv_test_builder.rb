@@ -35,5 +35,28 @@ module EffectiveIdvTestBuilder
     user
   end
 
+  def build_identity_verification(user: nil)
+    user ||= build_user()
+
+    idv = EffectiveIdv.IdentityVerification.new(user: user)
+
+    idv.assign_attributes(
+      legal_name: 'Legal Name',
+      date_of_birth: (Time.zone.now - 20.years),
+      expiry_date: (Time.zone.now + 1.year)
+    )
+
+    idv
+  end
+
+  def build_submitted_identity_verification(user: nil)
+    idv = build_identity_verification(user: user)
+
+    idv.photo.attach(io: StringIO.new('asdf'), filename: 'photo.jpg', content_type: 'image/jpg', identify: false)
+
+    idv.submit!
+    idv
+  end
+
 
 end
