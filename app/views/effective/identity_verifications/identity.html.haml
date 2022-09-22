@@ -1,0 +1,18 @@
+= render 'layout' do
+  = render 'effective/identity_verifications/content', resource: resource
+
+  = card do
+    = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
+      = f.hidden_field :id
+
+      %p Please provide the following information:
+
+      = f.text_field :legal_name
+      = f.date_field :date_of_birth
+
+      = f.file_field :photo, label: 'Photo of government issued ID'
+      = f.date_field :expiry_date, label: 'Expiry date of government issued ID'
+
+      = render_if_exists("effective/identity_verifications/identify_fields", f: f)
+
+      = f.save 'Save and Continue'

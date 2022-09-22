@@ -1,0 +1,27 @@
+%table.table.table-sm
+  %tbody
+    %tr
+      %th.border-0 Submitted by
+      %td.border-0
+        = identity_verification.user.to_s
+        %br
+        = mail_to(identity_verification.user.email)
+
+    - if request.path.start_with?('/admin')
+      %tr
+        %th User
+        %td
+          - url = (polymorphic_admin_path(identity_verification.user) rescue "/admin/users/#{identity_verification.user.to_param}/edit")
+          = link_to(identity_verification.user, url)
+
+    %tr
+      %th Status
+      %td
+        %span.badge.badge-secondary= identity_verification.status_label
+        = identity_verification.summary
+
+    - if identity_verification.declined?
+      %tr
+        %th Declined Reason
+        %td
+          = simple_format(identity_verification.declined_reason)

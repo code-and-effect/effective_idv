@@ -1,0 +1,4 @@
+.effective-identity_verification
+  - identity_verification.render_steps.each do |partial|
+    - identity_verification.render_step = partial
+    = render "effective/identity_verifications/#{partial}", identity_verification: identity_verification

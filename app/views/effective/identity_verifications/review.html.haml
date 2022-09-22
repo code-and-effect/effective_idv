@@ -1,0 +1,13 @@
+= render 'layout' do
+  = render 'effective/identity_verifications/content', resource: resource
+
+  = card do
+    = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
+      = f.hidden_field :id
+
+      %p You are about to submit the following:
+
+      .mb-4
+        = render('effective/identity_verifications/identity_verification', identity_verification: resource)
+
+      = f.save 'Submit Identity Verification'

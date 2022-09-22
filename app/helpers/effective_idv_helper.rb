@@ -1,0 +1,3 @@
+module EffectiveIdvHelper
+
+end

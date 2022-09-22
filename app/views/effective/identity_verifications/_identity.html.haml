@@ -1,0 +1,25 @@
+= wizard_card(identity_verification) do
+  %table.table.table-sm
+    %tbody
+      %tr
+        %th.border-0 Submitted by
+        %td.border-0
+          = identity_verification.user.to_s
+          %br
+          = mail_to(identity_verification.user.email)
+
+      %tr
+        %th Legal Name
+        %td= identity_verification.legal_name
+
+      %tr
+        %th Date of Birth
+        %td= identity_verification.date_of_birth.strftime('%F')
+
+      %tr
+        %th Government Issued ID Expiry Date
+        %td= identity_verification.expiry_date.strftime('%F')
+
+  .my-2.text-center
+    - url = url_for(identity_verification.photo)
+    %img.img-thumbnail{src: url, alt: identity_verification.to_s}

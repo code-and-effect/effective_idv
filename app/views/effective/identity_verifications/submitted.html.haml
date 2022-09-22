@@ -1,0 +1,24 @@
+= render 'layout' do
+  = render 'effective/identity_verifications/content', resource: resource
+
+  - raise('expected a submitted identity_verification') unless resource.was_submitted?
+
+  .alert.alert-success.mb-4
+    This identity verification was submitted on #{resource.submitted_at.strftime('%F')}
+
+  - unless resource.approved?
+    = card do
+      %p
+        Your identity verification must still be approved.
+        We will send
+        %strong= resource.user.email
+        an email notifying you of the approval status.
+
+  = card do
+    = render 'effective/identity_verifications/summary', identity_verification: resource
+
+  .mb-4
+    = collapse('Show identity verification...', card_class: 'my-2') do
+      = render 'effective/identity_verifications/identity_verification', identity_verification: resource
+
+  = link_to "Return to Dashboard", root_path, class: 'btn btn-lg btn-primary btn-block'

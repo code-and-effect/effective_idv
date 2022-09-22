@@ -1,0 +1,10 @@
+= render 'layout' do
+  = render 'effective/identity_verifications/content', resource: resource
+
+  = card do
+    %p You are about to submit an identity verification.
+    %p Please have a photo, scan or digital file containing your government issued identification card.
+
+    = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
+      = f.hidden_field :id
+      = f.save 'Save and Continue'

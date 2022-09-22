@@ -1,0 +1,30 @@
+- authorized = EffectiveResources.authorized?(self, :new, EffectiveIdv.IdentityVerification)
+- datatable = EffectiveResources.best('EffectiveIdentityVerificationsDatatable').new(self)
+
+- # In progress
+- identity_verification = current_user.identity_verifications.in_progress.first
+
+- if identity_verification.present?
+  %h2 In-Progress Identity Verification
+
+  %p
+    Your submission is incomplete.
+
+    %p
+      Please
+      = link_to("Continue Identity Verification", effective_idv.identity_verification_build_path(identity_verification, identity_verification.next_step), 'data-turbolinks' => false, class: 'btn btn-primary')
+      or you can
+      = link_to('Abandon', effective_idv.identity_verification_path(identity_verification), 'data-confirm': "Really delete #{identity_verification}?", 'data-method': :delete, class: 'btn btn-danger')
+      to submit again.
+
+    %hr
+
+%h2 Identity Verifications
+
+- if datatable.present?
+  = render_simple_datatable(datatable)
+- else
+  %p You have not yet provided any identity verifications. When you do, we'll show them here.
+
+- if authorized && identity_verification.blank?
+  %p= link_to 'Start Identity Verification', effective_idv.new_identity_verification_path, class: 'btn btn-primary'
