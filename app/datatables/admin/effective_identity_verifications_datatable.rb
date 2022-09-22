@@ -2,7 +2,7 @@ module Admin
   class EffectiveIdentityVerificationsDatatable < Effective::Datatable
     filters do
       scope :not_draft, label: 'All'
-      scope :in_progress, label: 'Open / Active'
+      scope :submitted, label: 'Open / Active'
       scope :done, label: 'Done'
       scope :draft
     end

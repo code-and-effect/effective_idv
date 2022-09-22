@@ -13,7 +13,7 @@ EffectiveIdv::Engine.routes.draw do
   end
 
   namespace :admin do
-    resources :identity_verifications, except: [:new, :create, :show]
+    resources :identity_verifications, except: [:new, :create]
   end
 
 end

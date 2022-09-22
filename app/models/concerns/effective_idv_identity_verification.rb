@@ -42,8 +42,6 @@ module EffectiveIdvIdentityVerification
       submitted: 'Submitted'
     )
 
-    scope :in_progress, -> { where(status: :draft) }
-    scope :done, -> { where(status: :submitted) }
 
     attr_accessor :admin_process_action
 
@@ -84,10 +82,9 @@ module EffectiveIdvIdentityVerification
       timestamps
     end
 
-    # Admin scopes
-    scope :not_draft, -> { where.not(status: :draft) }
-    scope :in_progress, -> { where(status: :submitted) }
+    scope :in_progress, -> { where(status: :draft) }
     scope :done, -> { where(status: [:approved, :declined]) }
+    scope :not_draft, -> { where.not(status: :draft) }
 
     scope :sorted, -> { order(:id) }
     scope :deep, -> { includes(:user) }

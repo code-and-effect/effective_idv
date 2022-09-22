@@ -9,6 +9,8 @@ class EffectiveIdentityVerificationsDatatable < Effective::Datatable
     col :created_at, label: 'Created', as: :date, visible: false
     col :updated_at, label: 'Updated', as: :date, visible: false
 
+    col :status
+
     col :submitted_at, label: 'Submitted', as: :date
     col :approved_at, label: 'Approved', as: :date
 

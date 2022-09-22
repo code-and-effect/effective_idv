@@ -8,14 +8,14 @@ module Admin
     resource_scope -> { EffectiveIdv.IdentityVerification.deep.all }
     datatable -> { Admin::EffectiveIdentityVerificationsDatatable.new }
 
-    submit :approve, 'Approve Identity Verification', success: -> {
+    submit :approve, 'Approve Identity Verification', redirect: :show, success: -> {
       [
         "Successfully approved #{resource}",
         ("and sent #{resource.user.email} a notification" unless resource.email_form_skip)
       ].compact.join(' ')
     }
 
-    submit :decline, 'Decline Identity Verification', success: -> {
+    submit :decline, 'Decline Identity Verification', redirect: :show, success: -> {
       [
         "Successfully declined #{resource}",
         ("and sent #{resource.user.email} a notification" unless resource.email_form_skip)
