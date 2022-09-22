@@ -45,6 +45,8 @@ module EffectiveIdvIdentityVerification
     scope :in_progress, -> { where(status: :draft) }
     scope :done, -> { where(status: :submitted) }
 
+    attr_accessor :admin_process_action
+
     # Application Namespace
     belongs_to :user, polymorphic: true
     accepts_nested_attributes_for :user
@@ -82,6 +84,11 @@ module EffectiveIdvIdentityVerification
       timestamps
     end
 
+    # Admin scopes
+    scope :not_draft, -> { where.not(status: :draft) }
+    scope :in_progress, -> { where(status: :submitted) }
+    scope :done, -> { where(status: [:approved, :declined]) }
+
     scope :sorted, -> { order(:id) }
     scope :deep, -> { includes(:user) }
 
@@ -105,15 +112,15 @@ module EffectiveIdvIdentityVerification
     validates :declined_reason, presence: true, if: -> { declined? }
 
     def to_s
-      "Identity Verification of #{user}"
+      legal_name.presence || 'identity verification'
     end
 
     def in_progress?
-      draft?
+      draft? || submitted?
     end
 
     def done?
-      submitted?
+      approved? || declined?
     end
 
     def can_visit_step?(step)
@@ -160,6 +167,20 @@ module EffectiveIdvIdentityVerification
       submitted!
 
       after_commit { send_email(:identity_verification_submitted) }
+      true
+    end
+
+    def approve!
+      approved!
+
+      after_commit { send_email(:identity_verification_approved) }
+      true
+    end
+
+    def decline!
+      declined!
+
+      after_commit { send_email(:identity_verification_declined) }
       true
     end
 

@@ -1,0 +1,151 @@
+%p
+  %span.badge.badge-secondary= identity_verification.status_label
+  = identity_verification.summary
+
+%table.table.table-sm.table-striped
+  %thead
+    %tr
+      %th Status
+      %th Date Reached
+      %th Details
+      %th
+        - # Next action button
+  %tbody
+
+    -# Draft
+    %tr
+      %td In Progress
+      %td= identity_verification.created_at.strftime('%F')
+      %td
+        - if identity_verification.was_submitted?
+          = icon('check', class: 'small-1')
+          Done
+        - else
+          = '-'
+      %td
+
+    - # Submitted
+    %tr
+      %td Application Submitted
+      %td= identity_verification.submitted_at&.strftime('%F') || '-'
+      %td
+        - if identity_verification.submit_order.present?
+          = link_to(identity_verification.submit_order, effective_orders.admin_order_path(identity_verification.submit_order))
+        - else
+          = '-'
+      %td
+
+    - # Waiting to Complete
+    %tr
+      %td Waiting to Complete
+      %td= identity_verification.submitted_at&.strftime('%F') || '-'
+      %td
+        - identity_verification.completed_requirements.each do |requirement, completed|
+          - next if requirement.to_s == 'identity_verification References'
+
+          %p
+            = icon((completed ? 'check' : 'x'), class: 'small-1')
+            = requirement
+
+        - if identity_verification.identity_verification_references_required?
+          %p
+            - if identity_verification.completed_requirements['identity_verification References']
+              = icon('check', class: 'small-1')
+
+            = identity_verification.identity_verification_references.count(&:completed?)
+            = '/'
+            = identity_verification.min_identity_verification_references
+            Required References Responded
+        - else
+          - if identity_verification.identity_verification_references.present?
+            %p
+              = identity_verification.identity_verification_references.count(&:completed?)
+              = '/'
+              = identity_verification.identity_verification_references.count
+              References Responded
+
+          %p
+            = icon('check', class: 'small-1')
+            References Not Required
+
+      %td
+        - if identity_verification.submitted?
+          = link_to 'Complete identity_verification', '#process', 'data-click-tab': true, class: 'btn btn-sm btn-primary'
+
+    - # Missing Information
+    %tr
+      %td Missing Information
+      %td= identity_verification.missing_info_at&.strftime('%F') || '-'
+      %td= identity_verification.missing_info_reason
+      %td
+
+    - # Completed
+    %tr
+      %td Application Completed
+      %td= identity_verification.completed_at&.strftime('%F') || '-'
+      %td
+        - if identity_verification.completed_at.present?
+          = icon('check', class: 'small-1')
+          Done
+      %td
+
+    - # Reviewed
+    - if EffectiveMemberships.identity_verification_reviews?
+      %tr.effective-memberships-identity_verification-status-reviewed
+        %td Reviews
+        %td= identity_verification.reviewed_at&.strftime('%F') || '-'
+        %td
+          - identity_verification.reviewed_requirements.each do |requirement, completed|
+            - next if requirement.to_s == 'identity_verification Reviews'
+
+            %p
+              = icon((completed ? 'check' : 'x'), class: 'small-1')
+              = requirement
+
+          - if identity_verification.identity_verification_reviews_required?
+            %p
+              - if identity_verification.reviewed_requirements['identity_verification Reviews']
+                = icon('check', class: 'small-1')
+
+              = identity_verification.identity_verification_reviews.count(&:submitted?)
+              = '/'
+              = identity_verification.min_identity_verification_reviews
+              Reviews Submitted
+          - else
+            %p
+              = icon('check', class: 'small-1')
+              Reviews Not Required
+
+        %td
+          - # Button to create reviews here
+
+    %tr
+      %td Waiting to Process
+      %td
+        - if EffectiveMemberships.identity_verification_reviews?
+          = identity_verification.reviewed_at&.strftime('%F') || '-'
+        - else
+          = identity_verification.completed_at&.strftime('%F') || '-'
+      %td
+      %td
+        - if identity_verification.was_submitted? && !(identity_verification.approved? || identity_verification.declined?)
+          = link_to 'Process identity_verification', '#process', 'data-click-tab': true, class: 'btn btn-sm btn-primary'
+
+    %tr
+      %td Processed
+      %td= (identity_verification.approved_at&.strftime('%F') || identity_verification.declined_at&.strftime('%F') || '-')
+      %td
+        - if identity_verification.was_approved? && !identity_verification.approved?
+          = icon('check', class: 'small-1')
+          Approved
+
+        - elsif identity_verification.was_declined? || identity_verification.declined?
+          = icon('check', class: 'small-1')
+          Declined
+          %br
+          = identity_verification.declined_reason
+
+        - elsif identity_verification.approved?
+          = icon('check', class: 'small-1')
+          Approved
+      %td

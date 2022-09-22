@@ -54,8 +54,7 @@ Add a link to the admin menu:
 
 ```haml
 - if can? :admin, :effective_idv
-  - if can? :index, Effective::Idv
-    = nav_link_to 'Idv', effective_idv.admin_idvs_path
+  = nav_link_to 'Identity Verifications', effective_idv.admin_identity_verifications_path
 ```
 
 ## Configuration

@@ -1,0 +1,12 @@
+%p This identity verification should be:
+
+= tabs(list: { class: 'nav nav-pills'}, ignore_save_tab: true, active: false) do
+  = tab 'Approved' do
+    .mt-4
+      = card('Approve Identity Verification') do
+        = render('admin/identity_verifications/form_approve', identity_verification: identity_verification)
+
+  = tab 'Declined' do
+    .mt-4
+      = card('Decline Identity Verification') do
+        = render('admin/identity_verifications/form_decline', identity_verification: identity_verification)

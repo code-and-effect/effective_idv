@@ -11,7 +11,27 @@ module Effective
       subject = subject_for(__method__, "Identity Verification Submitted - #{resource}", resource, opts)
       headers = headers_for(resource, opts)
 
-      mail(to: mailer_admin, subject: subject, **headers)
+      mail(to: resource.user.email, subject: subject, **headers)
+    end
+
+    def identity_verification_approved(resource, opts = {})
+      @assigns = assigns_for(resource)
+      @identity_verification = resource
+
+      subject = subject_for(__method__, "Identity Verification Approved - #{resource}", resource, opts)
+      headers = headers_for(resource, opts)
+
+      mail(to: resource.user.email, subject: subject, **headers)
+    end
+
+    def identity_verification_declined(resource, opts = {})
+      @assigns = assigns_for(resource)
+      @identity_verification = resource
+
+      subject = subject_for(__method__, "Identity Verification Declined - #{resource}", resource, opts)
+      headers = headers_for(resource, opts)
+
+      mail(to: resource.user.email, subject: subject, **headers)
     end
 
     protected
@@ -29,10 +49,11 @@ module Effective
 
       values = {
         date: (identity_verification.submitted_at || Time.zone.now).strftime('%F'),
+        submitted_at: (identity_verification.submitted_at&.strftime('%F') || 'not submitted'),
         approved_at: (identity_verification.approved_at&.strftime('%F') || 'not approved'),
 
         url: effective_idv.identity_verification_url(identity_verification),
-        admin_url: effective_idv.edit_admin_identity_verification_url(identity_verification),
+        admin_url: effective_idv.admin_identity_verification_url(identity_verification),
 
         # Optional
         declined_reason: identity_verification.declined_reason.presence,

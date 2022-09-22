@@ -1,4 +1,5 @@
 # Dashboard Identity Verifications
+
 class EffectiveIdentityVerificationsDatatable < Effective::Datatable
   datatable do
     order :created_at
@@ -11,12 +12,10 @@ class EffectiveIdentityVerificationsDatatable < Effective::Datatable
     col :submitted_at, label: 'Submitted', as: :date
     col :approved_at, label: 'Approved', as: :date
 
-    col :expiry_date, label: 'Expires', as: :date do |identity_verification|
-      if identity_verification.expired?
-        identity_verification.expiry_date.strftime('%F') + ' ' + badges('expired')
-      else
-        identity_verification.expiry_date.strftime('%F')
-      end
+    col :expiry_date
+
+    col :expired, label: 'Expired' do |identity_verification|
+      badges('expired') if identity_verification.expired?
     end
 
     actions_col(show: false) do |identity_verification|

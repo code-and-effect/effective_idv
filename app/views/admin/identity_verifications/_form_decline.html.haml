@@ -1,0 +1,11 @@
+= effective_form_with(model: [:admin, identity_verification], engine: true) do |f|
+  %p This identity verification will be <strong>declined</strong> with the following reason:
+
+  = f.text_field :declined_reason, required: true, label: 'Reason for decline'
+
+  %h3 Email to send
+
+  %p The following email will be sent:
+  = email_form_fields(f, :identity_verification_declined)
+
+  = f.submit 'Decline Identity Verification', border: false, center: true, 'data-confirm': "Decline #{f.object.user}?"

@@ -1,0 +1,6 @@
+= effective_form_with(model: [:admin, identity_verification], engine: true) do |f|
+  %p The identity verification for #{identity_verification} will be <strong>approved</strong>
+
+  %h3 Email to send
+  = email_form_fields(f, :identity_verification_approved)
+  = f.submit 'Approve Identity Verification', border: false, center: true, 'data-confirm': "Approve #{f.object.user}?"

@@ -1,0 +1,18 @@
+---
+subject: 'Your identity verification was declined'
+from: 'admin@example.com'
+---
+
+Hello {{ user.name }},
+
+Your identity verification submitted on #{{ identity_verification.submitted_at }} was declined with the following reason:
+
+{{ identity_verification.declined_reason }}
+
+For more details please visit
+
+{{ identity_verification.url }}
+
+Thank you.
+
+Please contact us for assistance.

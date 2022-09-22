@@ -1,0 +1,15 @@
+= tabs do
+  = tab 'Identity Verification' do
+    .mb-4
+      = render 'effective/identity_verifications/summary', identity_verification: identity_verification, namespace: :admin
+      = render 'effective/identity_verifications/identity_verification', identity_verification: identity_verification, namespace: :admin
+
+    - if identity_verification.was_submitted? && !identity_verification.was_approved?
+      = render 'admin/identity_verifications/form_process', identity_verification: identity_verification
+
+  = yield
+
+
+  - if identity_verification.persisted? && identity_verification.respond_to?(:logs_datatable)
+    = tab 'Logs' do
+      = render_datatable(identity_verification.logs_datatable, inline: true, namespace: :admin)
