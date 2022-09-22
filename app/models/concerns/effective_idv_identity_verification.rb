@@ -163,7 +163,11 @@ module EffectiveIdvIdentityVerification
     def submit!
       submitted!
 
-      after_commit { send_email(:identity_verification_submitted) }
+      after_commit do
+        send_email(:identity_verification_submitted)
+        send_email(:identity_verification_submitted_to_admin)
+      end
+
       true
     end
 

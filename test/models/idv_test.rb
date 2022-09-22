@@ -9,11 +9,14 @@ class IdvTest < ActiveSupport::TestCase
   test 'identity verification factory' do
     identity_verification = build_identity_verification()
     assert identity_verification.valid?
+    assert identity_verification.draft?
   end
 
   test 'submitted identity verification factory' do
     identity_verification = build_submitted_identity_verification()
+    assert identity_verification.valid?
     assert identity_verification.submitted?
+    assert identity_verification.in_progress?
   end
 
 end

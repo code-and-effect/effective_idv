@@ -14,6 +14,16 @@ module Effective
       mail(to: resource.user.email, subject: subject, **headers)
     end
 
+    def identity_verification_submitted_to_admin(resource, opts = {})
+      @assigns = assigns_for(resource)
+      @identity_verification = resource
+
+      subject = subject_for(__method__, "Identity Verification Submitted - #{resource}", resource, opts)
+      headers = headers_for(resource, opts)
+
+      mail(to: mailer_admin, subject: subject, **headers)
+    end
+
     def identity_verification_approved(resource, opts = {})
       @assigns = assigns_for(resource)
       @identity_verification = resource

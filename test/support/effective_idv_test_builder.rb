@@ -53,8 +53,8 @@ module EffectiveIdvTestBuilder
     idv = build_identity_verification(user: user)
 
     idv.photo.attach(io: StringIO.new('asdf'), filename: 'photo.jpg', content_type: 'image/jpg', identify: false)
-
     idv.submit!
+
     idv
   end
 
