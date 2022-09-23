@@ -25,8 +25,10 @@ module EffectiveIdvUser
     }
 
     scope :identity_verification_expired, -> {
-      idvs = EffectiveIdv.IdentityVerification.expired.where(user_type: name)
-      where(id: idvs.select('user_id'))
+      valid = EffectiveIdv.IdentityVerification.valid.where(user_type: name)
+      expired = EffectiveIdv.IdentityVerification.expired.where(user_type: name)
+
+      where(id: expired.select('user_id')).where.not(id: valid.select('user_id'))
     }
 
     scope :identity_verification_expiring_soon, -> {

@@ -100,7 +100,7 @@ module EffectiveIdvIdentityVerification
       date ||= EffectiveIdv.IdentityVerification.expiring_soon_date()
       raise('expected a future date') if date <= Time.zone.now
 
-      approved.where(arel_table[:expiry_date].lteq(date))
+      valid.where(arel_table[:expiry_date].lteq(date))
     }
 
     scope :was_submitted, -> { where.not(status: :draft) }
