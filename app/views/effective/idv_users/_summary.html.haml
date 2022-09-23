@@ -1,0 +1,29 @@
+- raise('expected an idv user') unless user && user.class.respond_to?(:effective_idv_user?)
+
+- if user.identity_verification_valid?
+  %p
+    = user
+    has a valid identity verification that continues for
+    = distance_of_time_in_words(Time.zone.now, user.identity_verification_expiry_date)
+    from now and ends on
+    = user.identity_verification_expiry_date
+
+- elsif user.identity_verification_expired?
+  %p
+    = user
+    has an #{badges('expired')} identity validation that expired
+    = distance_of_time_in_words(user.identity_verification_expiry_date, Time.zone.now)
+    ago on
+    = user.identity_verification_expiry_date
+
+- elsif user.submitted_identity_verifications.present?
+  %p
+    = user
+    has submitted
+    = pluralize(user.submitted_identity_verifications.length, 'identity verification')
+    that have not yet been approved
+
+- elsif user.identity_verifications.to_a.blank?
+  %p
+    = user
+    has not yet submitted an identity verification

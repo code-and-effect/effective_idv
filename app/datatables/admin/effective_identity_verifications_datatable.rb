@@ -5,6 +5,9 @@ module Admin
       scope :submitted, label: 'Open / Active'
       scope :done, label: 'Done'
       scope :draft
+      scope :valid
+      scope :expired
+      scope :expiring_soon
     end
 
     datatable do
@@ -20,6 +23,7 @@ module Admin
 
       col :submitted_at, label: 'Submitted', as: :date
       col :approved_at, label: 'Approved', as: :date
+      col :declined_at, label: 'Declined', as: :date
 
       col :user
 

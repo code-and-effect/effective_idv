@@ -8,6 +8,7 @@
           %br
           = mail_to(identity_verification.user.email)
 
+          = render_if_exists("effective/identity_verifications/identity_user", identity_verification: identity_verification, user: identity_verification.user)
       %tr
         %th Legal Name
         %td= identity_verification.legal_name

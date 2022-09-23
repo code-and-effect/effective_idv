@@ -8,11 +8,11 @@
       %p Please provide the following information:
 
       = f.text_field :legal_name
-      = f.date_field :date_of_birth
+      = f.date_field :date_of_birth, input_js: { viewMode: 'decades', maxDate: Time.zone.now.strftime('%F') }
 
       = f.file_field :photo, label: 'Photo of government issued ID'
-      = f.date_field :expiry_date, label: 'Expiry date of government issued ID'
+      = f.date_field :expiry_date, label: 'Expiry date of government issued ID', input_js: { minDate: Time.zone.now.strftime('%F') }
 
-      = render_if_exists("effective/identity_verifications/identify_fields", f: f)
+      = render_if_exists("effective/identity_verifications/identity_fields", f: f, identity_verification: resource)
 
       = f.save 'Save and Continue'

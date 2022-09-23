@@ -9,7 +9,6 @@
 
   = yield
 
-
   - if identity_verification.persisted? && identity_verification.respond_to?(:logs_datatable)
     = tab 'Logs' do
       = render_datatable(identity_verification.logs_datatable, inline: true, namespace: :admin)

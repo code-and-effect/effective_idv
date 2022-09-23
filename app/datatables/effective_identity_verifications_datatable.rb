@@ -13,6 +13,7 @@ class EffectiveIdentityVerificationsDatatable < Effective::Datatable
 
     col :submitted_at, label: 'Submitted', as: :date
     col :approved_at, label: 'Approved', as: :date
+    col :declined_at, label: 'Declined', as: :date
 
     col :expiry_date
 

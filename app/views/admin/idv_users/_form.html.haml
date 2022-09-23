@@ -1,0 +1,7 @@
+- raise('expected an idv user') unless user && user.class.respond_to?(:effective_idv_user?)
+
+= card('Identity Verification') do
+  = render('effective/idv_users/summary', user: user)
+
+- datatable = Admin::EffectiveIdentityVerificationsDatatable.new(user: user)
+= render_datatable(datatable, inline: true)

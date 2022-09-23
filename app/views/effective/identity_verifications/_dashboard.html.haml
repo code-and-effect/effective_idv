@@ -21,6 +21,8 @@
 
 %h2 Identity Verifications
 
+= render('effective/idv_users/summary', user: current_user)
+
 - if datatable.present?
   = render_simple_datatable(datatable)
 - else
