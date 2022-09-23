@@ -8,7 +8,7 @@
     from now and ends on
     = user.identity_verification_expiry_date
 
-- elsif user.identity_verification_expired?
+- if user.identity_verification_expired?
   %p
     = user
     has an #{badges('expired')} identity validation that expired
@@ -16,14 +16,17 @@
     ago on
     = user.identity_verification_expiry_date
 
-- elsif user.submitted_identity_verifications.present?
+- if user.identity_verification_expiring_soon?
+  %p #{user}'s identity verification expires soon
+
+- if user.submitted_identity_verifications.present?
   %p
     = user
     has submitted
     = pluralize(user.submitted_identity_verifications.length, 'identity verification')
-    that have not yet been approved
+    that has not yet been approved
 
-- elsif user.identity_verifications.to_a.blank?
+- if user.was_submitted_identity_verifications.blank?
   %p
     = user
     has not yet submitted an identity verification

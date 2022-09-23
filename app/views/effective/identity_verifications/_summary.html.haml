@@ -14,6 +14,21 @@
           - url = (polymorphic_admin_path(identity_verification.user) rescue "/admin/users/#{identity_verification.user.to_param}/edit")
           = link_to(identity_verification.user, url)
 
+    - if identity_verification.submitted_at.present?
+      %tr
+        %th Submitted on
+        %td= identity_verification.submitted_at.strftime('%F')
+
+    - if identity_verification.approved_at.present?
+      %tr
+        %th Approved on
+        %td= identity_verification.approved_at.strftime('%F')
+
+    - if identity_verification.declined_at.present?
+      %tr
+        %th Declined on
+        %td= identity_verification.declined_at.strftime('%F')
+
     %tr
       %th Status
       %td

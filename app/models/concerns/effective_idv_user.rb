@@ -58,8 +58,10 @@ module EffectiveIdvUser
       'Expiring Soon'
     elsif identity_verification_valid?
       'Valid'
-    elsif submitted_identity_verifications.blank?
+    elsif was_submitted_identity_verifications.blank?
       'Never Submitted'
+    elsif submitted_identity_verifications.present?
+      'Ready to Approve'
     else
       'Invalid'
     end
@@ -67,11 +69,15 @@ module EffectiveIdvUser
 
   # Plurals
   def submitted_identity_verifications
+    identity_verifications.select(&:submitted?)
+  end
+
+  def was_submitted_identity_verifications
     identity_verifications.select(&:was_submitted?)
   end
 
   def approved_identity_verifications
-    identity_verifications.select(&:was_approved?)
+    identity_verifications.select(&:approved?)
   end
 
   # Singular
@@ -93,6 +99,10 @@ module EffectiveIdvUser
   def identity_verification_expiring_soon?
     return false if approved_identity_verifications.blank?
     identity_verification_expiry_date <= EffectiveIdv.IdentityVerification.expiring_soon_date()
+  end
+
+  def identity_verification_approved_at
+    approved_identity_verifications.max { |idv| idv.approved_at }.try(:approved_at)
   end
 
 end
