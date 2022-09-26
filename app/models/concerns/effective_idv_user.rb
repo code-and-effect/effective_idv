@@ -9,9 +9,6 @@ module EffectiveIdvUser
     def effective_idv_user
       include ::EffectiveIdvUser
     end
-
-
-
   end
 
   included do
@@ -31,8 +28,8 @@ module EffectiveIdvUser
       where(id: expired.select('user_id')).where.not(id: valid.select('user_id'))
     }
 
-    scope :identity_verification_expiring_soon, -> {
-      idvs = EffectiveIdv.IdentityVerification.expiring_soon.where(user_type: name)
+    scope :identity_verification_expiring_soon, -> (date = nil) {
+      idvs = EffectiveIdv.IdentityVerification.expiring_soon(date).where(user_type: name)
       where(id: idvs.select('user_id'))
     }
 
@@ -96,9 +93,17 @@ module EffectiveIdvUser
     identity_verification_expiry_date <= Time.zone.now.to_date
   end
 
-  def identity_verification_expiring_soon?
+  def identity_verification_expiring_soon?(date = nil)
     return false if approved_identity_verifications.blank?
-    identity_verification_expiry_date <= EffectiveIdv.IdentityVerification.expiring_soon_date()
+
+    date ||= EffectiveIdv.IdentityVerification.expiring_soon_date()
+    raise("expected a future date got #{date || 'nil'}") unless date.respond_to?(:strftime) && date > Time.zone.now
+
+    identity_verification_expiry_date <= date
+  end
+
+  def identity_verification_never_submitted?
+    was_submitted_identity_verifications.blank?
   end
 
   def identity_verification_approved_at

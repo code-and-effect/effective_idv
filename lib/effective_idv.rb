@@ -1,3 +1,5 @@
+require 'lockbox'
+
 require 'effective_resources'
 require 'effective_datatables'
 require 'effective_idv/engine'
@@ -7,7 +9,8 @@ module EffectiveIdv
 
   def self.config_keys
     [
-      :identity_verifications_table_name, :identity_verification_class_name,
+      :identity_verifications_table_name,
+      :identity_verification_class_name, :identity_verification_notifier_class_name,
       :layout,
       :mailer, :parent_mailer, :deliver_method, :mailer_layout, :mailer_sender, :mailer_admin, :mailer_subject, :use_effective_email_templates
     ]
@@ -17,6 +20,11 @@ module EffectiveIdv
 
   def self.IdentityVerification
     identity_verification_class_name&.constantize || Effective::IdentityVerification
+  end
+
+  # Singleton
+  def self.IdentityVerificationNotifier
+    (identity_verification_notifier_class_name&.constantize || Effective::IdentityVerificationNotifier).new
   end
 
   def self.mailer_class

@@ -22,7 +22,7 @@ module EffectiveIdvIdentityVerification
     end
 
     def expiring_soon_date
-      Time.zone.now.to_date + 3.months
+      Time.zone.now.to_date + 2.months
     end
 
   end
@@ -102,7 +102,7 @@ module EffectiveIdvIdentityVerification
 
     scope :expiring_soon, -> (date = nil) {
       date ||= EffectiveIdv.IdentityVerification.expiring_soon_date()
-      raise('expected a future date') if date <= Time.zone.now
+      raise("expected a future date got #{date || 'nil'}") unless date.respond_to?(:strftime) && date > Time.zone.now.to_date
 
       valid.where(arel_table[:expiry_date].lteq(date))
     }
@@ -185,9 +185,13 @@ module EffectiveIdvIdentityVerification
       expiry_date <= Time.zone.now.to_date
     end
 
-    def expiring_soon?
+    def expiring_soon?(date = nil)
       return false if expiry_date.blank?
-      expiry_date <= self.class.expiring_soon_date()
+
+      date ||= EffectiveIdv.IdentityVerification.expiring_soon_date()
+      raise('expected a future date') unless date.respond_to?(:strftime) && date > Time.zone.now
+
+      expiry_date <= date
     end
 
     # Called by the form

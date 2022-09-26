@@ -44,11 +44,36 @@ module Effective
       mail(to: resource.user.email, subject: subject, **headers)
     end
 
+    # User
+    def identity_verification_never_submitted(resource, opts = {})
+      @assigns = assigns_for(resource)
+      @user = resource
+
+      subject = subject_for(__method__, "Your Identity Verification is Required", resource, opts)
+      headers = headers_for(resource, opts)
+
+      mail(to: resource.user.email, subject: subject, message_stream: 'broadcast-stream', **headers)
+    end
+
+    def identity_verification_expiring_soon(resource, opts = {})
+      @assigns = assigns_for(resource)
+      @user = resource
+
+      subject = subject_for(__method__, "Your Identity Verification Expires Soon", resource, opts)
+      headers = headers_for(resource, opts)
+
+      mail(to: resource.user.email, subject: subject, message_stream: 'broadcast-stream', **headers)
+    end
+
     protected
 
     def assigns_for(resource)
       if resource.class.respond_to?(:effective_idv_identity_verification?)
         return identity_verification_assigns(resource).merge(user_assigns(resource.user))
+      end
+
+      if resource.class.respond_to?(:effective_idv_user?)
+        return new_identity_verification_assigns.merge(user_assigns(resource))
       end
 
       raise('unexpected resource')
@@ -68,6 +93,14 @@ module Effective
         # Optional
         declined_reason: identity_verification.declined_reason.presence,
       }.compact
+
+      { identity_verification: values }
+    end
+
+    def new_identity_verification_assigns
+      values = {
+        url: effective_idv.new_identity_verification_url
+      }
 
       { identity_verification: values }
     end

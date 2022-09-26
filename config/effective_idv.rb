@@ -9,6 +9,7 @@ EffectiveIdv.setup do |config|
   # Identity Verification Settings
   # Configure the class responsible for the identity verification.
   # config.identity_verification_class_name = 'Effective::IdentityVerification'
+  # config.identity_verification_notifier_class_name = 'Effective::IdentityVerificationNotifier'
 
   # Mailer Settings
   # Please see config/initializers/effective_resources.rb for default effective_* gem mailer settings
