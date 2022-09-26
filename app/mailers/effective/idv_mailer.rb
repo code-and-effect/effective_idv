@@ -52,7 +52,7 @@ module Effective
       subject = subject_for(__method__, "Your Identity Verification is Required", resource, opts)
       headers = headers_for(resource, opts)
 
-      mail(to: resource.user.email, subject: subject, message_stream: 'broadcast-stream', **headers)
+      mail(to: resource.email, subject: subject, message_stream: 'broadcast-stream', **headers)
     end
 
     def identity_verification_expiring_soon(resource, opts = {})
@@ -62,7 +62,7 @@ module Effective
       subject = subject_for(__method__, "Your Identity Verification Expires Soon", resource, opts)
       headers = headers_for(resource, opts)
 
-      mail(to: resource.user.email, subject: subject, message_stream: 'broadcast-stream', **headers)
+      mail(to: resource.email, subject: subject, message_stream: 'broadcast-stream', **headers)
     end
 
     protected

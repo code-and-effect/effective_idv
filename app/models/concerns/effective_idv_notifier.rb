@@ -31,8 +31,6 @@ module EffectiveIdvNotifier
 
     users = resource_scope.identity_verification_never_submitted
 
-    binding.pry
-
     users.find_each do |user|
       # Sanity check
       next unless user.identity_verification_never_submitted?
