@@ -90,13 +90,14 @@ The permissions you actually want to define are as follows (using CanCan):
 if user.persisted?
   can([:index, :show], EffectiveIdv.IdentityVerification) { |idv| idv.user == user }
   can([:update, :destroy], EffectiveIdv.IdentityVerification) { |idv| idv.user == user && !idv.was_submitted? }
+  can(:destroy, EffectiveIdv.IdentityVerification) { |idv| idv.user == user && idv.expired? }
 end
 
 if user.admin?
   can :admin, :effective_idv
 
   can(crud - [:destroy], EffectiveIdv.IdentityVerification)
-  can(:destroy, EffectiveIdv.IdentityVerification) { |idv| idv.draft? }
+  can(:destroy, EffectiveIdv.IdentityVerification) { |idv| idv.draft? || idv.expired? }
 
   can(:approve, EffectiveIdv.IdentityVerification) { |idv| idv.was_submitted? && !idv.approved? }
   can(:decline, EffectiveIdv.IdentityVerification) { |idv| idv.was_submitted? && !idv.declined? }
