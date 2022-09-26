@@ -2,15 +2,17 @@
   = render 'effective/identity_verifications/content', resource: resource
 
   = card do
-    = effective_form_with(model: resource, url: wizard_path(step), method: :put) do |f|
+    = effective_form_with(model: resource, url: wizard_path(step), method: :put, autocomplete: 'off') do |f|
       = f.hidden_field :id
 
       %p Please provide the following information:
 
       = f.text_field :legal_name
-      = f.date_field :date_of_birth, input_js: { viewMode: 'decades', maxDate: Time.zone.now.strftime('%F') }
+      = f.date_field :date_of_birth, input_js: { viewMode: 'decades', maxDate: Time.zone.now.strftime('%F'), useCurrent: false }
 
-      = f.file_field :photo, label: 'Photo of government issued ID'
+      - # This cannot be direct upload as we use lockbox to encrypt this payload
+      = f.file_field :photo, label: 'Photo of government issued ID', direct_upload: false, autocomplete: 'off'
+
       = f.date_field :expiry_date, label: 'Expiry date of government issued ID', input_js: { minDate: Time.zone.now.strftime('%F') }
 
       = render_if_exists("effective/identity_verifications/identity_fields", f: f, identity_verification: resource)

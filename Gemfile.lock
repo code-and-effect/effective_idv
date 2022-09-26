@@ -1,10 +1,11 @@
 PATH
   remote: .
   specs:
-    effective_idv (0.0.1)
+    effective_idv (0.0.2)
       effective_bootstrap
       effective_datatables (>= 4.0.0)
       effective_resources
+      lockbox
       rails (>= 6.0.0)
       wicked
 
@@ -176,6 +177,7 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     liquid (5.1.0)
+    lockbox (1.0.0)
     loofah (2.12.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)

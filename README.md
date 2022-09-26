@@ -1,8 +1,10 @@
 # Effective Identity Verification (IDV)
 
-Users complete a wizard and upload encrypted identity documents like drivers licenses.
+A rails engine for secure identity document uploads and verifications.
 
-An admin views the documents and verifies the user identity.
+Uses the [lockbox](https://github.com/ankane/lockbox) gem for client-side encrypted ActiveStorage uploads and encrypted database fields.
+
+A simple approve and decline process for admins to verify an identity.
 
 ## Getting Started
 
@@ -41,6 +43,20 @@ Then migrate the database:
 rake db:migrate
 ```
 
+Then generate a lockbox master key:
+
+```
+bundle exec rails console
+> require 'lockbox'
+> Lockbox.generate_key
+```
+
+and add an env key
+
+```
+LOCKBOX_MASTER_KEY=asdf1234
+```
+
 Please add the following to your User model:
 
 ```
@@ -56,15 +72,11 @@ Add a link to the admin menu:
   = nav_link_to 'Identity Verifications', effective_idv.admin_identity_verifications_path
 ```
 
-Add a link to the user dashboard:
+Add a partial to the user dashboard:
 
 ```haml
 = render 'effective/identity_verifications/dashboard'
 ```
-
-## Configuration
-
-Todo
 
 ## Authorization
 

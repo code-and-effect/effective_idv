@@ -22,5 +22,6 @@
         %td= identity_verification.expiry_date.strftime('%F')
 
   .my-2.text-center
-    - url = url_for(identity_verification.photo)
-    %img.img-thumbnail{src: url, alt: identity_verification.to_s}
+    .identity-verification-photo{oncontextmenu: 'return false;'}
+      - data = lockbox_encrypted_image_data(identity_verification.photo)
+      %img.img-thumbnail{src: data, alt: identity_verification.to_s}

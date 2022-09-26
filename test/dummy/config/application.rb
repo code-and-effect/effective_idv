@@ -7,6 +7,7 @@ require "rails/all"
 Bundler.require(*Rails.groups)
 
 require 'devise'
+require 'lockbox'
 require 'haml-rails'
 require 'wicked'
 

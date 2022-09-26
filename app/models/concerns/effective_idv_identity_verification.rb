@@ -54,14 +54,18 @@ module EffectiveIdvIdentityVerification
     accepts_nested_attributes_for :user
 
     has_one_attached :photo
+    encrypts_attached :photo
+
+    has_encrypted :legal_name, type: :string
+    has_encrypted :date_of_birth, type: :date
 
     effective_resource do
       identity_verification_type      :string       # Unused
 
       # Fields Collected
+      expiry_date           :date
       legal_name            :string
       date_of_birth         :date
-      expiry_date           :date
 
       # Acts as Statused
       status                 :string, permitted: false
