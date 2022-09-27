@@ -23,5 +23,10 @@
 
   .my-2.text-center
     .identity-verification-photo{oncontextmenu: 'return false;'}
-      - data = lockbox_encrypted_image_data(identity_verification.photo)
-      %img.img-thumbnail{src: data, alt: identity_verification.to_s}
+      - photo = identity_verification.photo
+      - data = lockbox_encrypted_image_data(photo)
+
+      - if photo.image?
+        %img.img-thumbnail{src: data, alt: identity_verification.to_s}
+      - else
+        = link_to(photo.filename, data, title: identity_verification.to_s, target: '_blank')
