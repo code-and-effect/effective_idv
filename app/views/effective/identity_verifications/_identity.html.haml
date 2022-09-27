@@ -29,4 +29,4 @@
       - if photo.image?
         %img.img-thumbnail{src: data, alt: identity_verification.to_s}
       - else
-        = link_to(photo.filename, data, title: identity_verification.to_s, target: '_blank')
+        = link_to(photo.filename, data, download: photo.filename, title: identity_verification.to_s, target: '_blank')
