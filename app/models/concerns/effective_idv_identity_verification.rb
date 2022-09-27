@@ -120,8 +120,8 @@ module EffectiveIdvIdentityVerification
       validates :date_of_birth, presence: true
       validates :expiry_date, presence: true
 
-      validate do
-        errors.add(:photo, 'must be an image') if photo.attached? && !photo.image?
+      validate(if: -> { photo.attached? }) do
+        errors.add(:photo, 'must be an image or pdf') unless (photo.image? || photo.content_type == 'application/pdf')
       end
     end
 

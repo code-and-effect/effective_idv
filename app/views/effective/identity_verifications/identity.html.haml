@@ -8,10 +8,14 @@
       %p Please provide the following information:
 
       = f.text_field :legal_name
-      = f.date_field :date_of_birth, input_js: { viewMode: 'decades', maxDate: Time.zone.now.strftime('%F'), useCurrent: false }
+      = f.date_field :date_of_birth, input_js: { viewMode: 'decades', maxDate: Time.zone.now.strftime('%F'), useCurrent: false }, required: false
 
       - # This cannot be direct upload as we use lockbox to encrypt this payload
-      = f.file_field :photo, label: 'Photo of government issued ID', direct_upload: false, autocomplete: 'off'
+      - # We always set the photo to nil to avoid a lockbox attachable error with an invalid form resubmit
+      - f.object.photo = nil
+
+      = f.file_field :photo, label: 'Photo of government issued ID', direct_upload: false, autocomplete: 'off',
+        hint: 'please attach an image or pdf file'
 
       = f.date_field :expiry_date, label: 'Expiry date of government issued ID', input_js: { minDate: Time.zone.now.strftime('%F') }
 
