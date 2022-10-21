@@ -204,7 +204,10 @@ module EffectiveIdvIdentityVerification
 
       after_commit do
         send_email(:identity_verification_submitted)
-        send_email(:identity_verification_submitted_to_admin)
+
+
+        # Disabled for now. This could be a config option.
+        # send_email(:identity_verification_submitted_to_admin)
       end
 
       true

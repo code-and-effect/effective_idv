@@ -4,7 +4,7 @@ class IdentityVerificationTest < ActiveSupport::TestCase
   test 'when submitted' do
     identity_verification = build_submitted_identity_verification()
 
-    assert_email(count: 2) { build_submitted_identity_verification() }
+    assert_email(count: 1) { build_submitted_identity_verification() }
 
     assert identity_verification.submitted?
     assert identity_verification.in_progress?
